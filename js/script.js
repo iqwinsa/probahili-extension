@@ -388,50 +388,69 @@ var retailCRM = {
         let pathResponse = retailCRM_origin + "/api/v5/store/inventories";
 
         retailCRM.getAjaxAsync(pathResponse, paramsRetail)
-            .then(function (data) { 
-                let dataOffers = data["offers"];                             
-                for (let offer of dataOffers) {
-                   // console.log(offer);                    
-                    let xmlId = offer["xmlId"];                   
-                    let stores = offer.stores.filter(e => e.store == "a1" || e.store == 'volga' || e.store == "a1-msk").sort().reverse();  // Делаем reverse, т.к. волга на первое
-                    // console.log(stores);
-                    retail_stock_html = '<div class="pack-row-retailcrm" data-xmlid="' + xmlId + '">';
-                    retail_stock_html += '<div class="retailcrm-available">Остаток</div>';
+        .then(function (data) { 
+            let dataOffers = data["offers"];                             
+            for (let offer of dataOffers) {                
+                let xmlId = offer["xmlId"];                    
+                let stores = offer.stores.filter(e => e.store == 'volga' || e.store == "a1" || e.store == "a1-msk");
+                // stores = stores.sort().reverse();
 
-                    for (let st of stores) {
-                        // console.log(stores);
-                        let legitStockName = "";
-                        let stockQnt = st["quantity"] ?? 0;
-                        switch (st["store"]) {
-                            case "roza":
-                                legitStockName = "СПБ, Роза"
-                                break;
-                            case "volga":
-                                legitStockName = "МСК, Волга"
-                                break;
-                            case "a1":
-                                legitStockName = "СПБ, А1"
-                                break;
-                            case "a1-msk":
-                                legitStockName = "МСК, A1"
-                                break;
-                        }                      
-                        retail_stock_html += '<div class="select-stock" data-quantity=' + stockQnt + ' id='+ st["store"] + '>';
-                        retail_stock_html += legitStockName + ' <span>' + stockQnt + '</span>';
-                        retail_stock_html += '</div>';
-                    }
-                    retail_stock_html += '</div></div>';
-                    if ($("#order-products-table tbody .order-product[data-offer-id='" + offer.id + "'] .status .product-status-wrap").find("pack-row-retailcrm").length === 0) {
-                        $("#order-products-table tbody .order-product[data-offer-id='" + offer.id + "'] .status .product-status-wrap").append(retail_stock_html);
-                    }
-                    // pos.append(retail_stock_html);
-                    retailCRM.orderProductLightning();
+                let mapped = stores.map(function(el, i) {
+                    // return console.log(el);
+                    return { index: i, value: el.store.toLowerCase() };
+                });
+
+                mapped.sort(function(a, b) {
+                if (a.value > b.value) {
+                    return 1; }
+                if (a.value < b.value) {
+                    return -1; }
+                return 0;
+                });
+
+                stores = mapped.map(function(el) {
+                    return stores[el.index];
+                }).reverse();
+
+                // console.log(stores);
+                
+                retail_stock_html = '<div class="pack-row-retailcrm" data-xmlid="' + xmlId + '">';
+                retail_stock_html += '<div class="retailcrm-available">Остаток</div>';
+
+                for (let st of stores) {
+                    // console.log(stores);
+                    let legitStockName = "";
+                    let stockQnt = st["quantity"] ?? 0;
+                    switch (st["store"]) {
+                        case "roza":
+                            legitStockName = "СПБ, Роза"
+                            break;
+                        case "volga":
+                            legitStockName = "МСК, Волга"
+                            break;
+                        case "a1":
+                            legitStockName = "СПБ, А1"
+                            break;
+                        case "a1-msk":
+                            legitStockName = "МСК, A1"
+                            break;
+                    }                      
+                    retail_stock_html += '<div class="select-stock" data-quantity=' + stockQnt + ' id='+ st["store"] + '>';
+                    retail_stock_html += legitStockName + ' <span>' + stockQnt + '</span>';
+                    retail_stock_html += '</div>';
                 }
-                $("#ms-query").removeAttr('disabled');
-            })
-            .catch(function (err) {
-                console.log(err);
-            });
+                retail_stock_html += '</div></div>';
+                if ($("#order-products-table tbody .order-product[data-offer-id='" + offer.id + "'] .status .product-status-wrap").find("pack-row-retailcrm").length === 0) {
+                    $("#order-products-table tbody .order-product[data-offer-id='" + offer.id + "'] .status .product-status-wrap").append(retail_stock_html);
+                }
+                // pos.append(retail_stock_html);
+                retailCRM.orderProductLightning();
+            }
+            $("#ms-query").removeAttr('disabled');
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
 
         // ajax_response.fail(function (jqXHR, textStatus, errorThrown) {
         //     console.log(textStatus + ': ' + errorThrown);
