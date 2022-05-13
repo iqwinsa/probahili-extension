@@ -8,7 +8,6 @@ document.onreadystatechange = function () {
 };
 
 // Свойства
-var initBtnShowPop = 0;
 var moySkladRequest = {
     'items': {},
 };
@@ -24,16 +23,6 @@ var OrderParams = {
         'retailcode': ''
     }
 };
-var UsersTelphinAndCRMParams = {
-    'ids': {},
-};
-var OrderCustomFields = {
-    'order_field_initial_request_basket': {},
-    'OrderCustomFieldsDelPrdIsBasket':{},
-};
-var OrderCustomFieldsDelPrdIsBasket = {};
-var OrderPrdIsBasketUpdatePrice;
-var OrderStoreId = '';
 
 var retailCRM_apiKey = localStorage.apiKey ?? undefined;
 var retailCRM_host = window.location.host.split(".")[0];
@@ -82,7 +71,6 @@ var retailCRM = {
 
     orderTopFormOstatkiEvent: function () {
         if ($('body').find("#top_order_ostatki_is_prd").length == 0) {
-
             // console.log("orderTopFormOstatkiEvent");
             // $('#content-wrapper').prepend(retailCRM.showTopFormOstatkiHTML());
             let topFormSelector = ($(".order-header").length > 0) ? $(".order-header") : $('.m-box.mn-or-info');
@@ -177,6 +165,9 @@ var retailCRM = {
                     break;
                 case "45":
                     OrderParams["store"]["retailcode"] = "a1";
+                    break;
+                case "78":
+                    OrderParams["store"]["retailcode"] = "a1-msk";
                     break;
                 default:
                     OrderParams["store"]["retailcode"] = "volga";
@@ -402,7 +393,7 @@ var retailCRM = {
                 for (let offer of dataOffers) {
                    // console.log(offer);                    
                     let xmlId = offer["xmlId"];                   
-                    let stores = offer.stores.filter(e => e.store == "a1" || e.store == 'volga').sort().reverse();  // Делаем reverse, т.к. волга на первое
+                    let stores = offer.stores.filter(e => e.store == "a1" || e.store == 'volga' || e.store == "a1-msk").sort().reverse();  // Делаем reverse, т.к. волга на первое
                     // console.log(stores);
                     retail_stock_html = '<div class="pack-row-retailcrm" data-xmlid="' + xmlId + '">';
                     retail_stock_html += '<div class="retailcrm-available">Остаток</div>';
@@ -419,7 +410,10 @@ var retailCRM = {
                                 legitStockName = "МСК, Волга"
                                 break;
                             case "a1":
-                                legitStockName = "A1"
+                                legitStockName = "СПБ, А1"
+                                break;
+                            case "a1-msk":
+                                legitStockName = "МСК, A1"
                                 break;
                         }                      
                         retail_stock_html += '<div class="select-stock" data-quantity=' + stockQnt + ' id='+ st["store"] + '>';
