@@ -1,44 +1,28 @@
-.clock-loader {
-  --clock-color: #ff742f;
-  --clock-width: 20px;
-  --clock-radius: calc(var(--clock-width) / 2);
-  --clock-minute-length: calc(var(--clock-width) * 0.4);
-  --clock-hour-length: calc(var(--clock-width) * 0.2);
-  --clock-thickness: 0.2rem;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: var(--clock-width);
-  height: var(--clock-width);
-  border: 3px solid var(--clock-color);
-  border-radius: 50%;
-}
-.clock-loader::before,
-.clock-loader::after {
-  position: absolute;
-  content: "";
-  top: calc(var(--clock-radius) * 0.25);
-  width: var(--clock-thickness);
-  background: var(--clock-color);
-  border-radius: 10px;
-  transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
-  animation: spin infinite linear;
-}
-.clock-loader::before {
-  height: var(--clock-minute-length);
-  animation-duration: 2s;
-}
-.clock-loader::after {
-  top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
-  height: var(--clock-hour-length);
-  animation-duration: 15s;
+/** RetailCRM CSS Editor */
+
+#section-log-notes .grid__event {
+  margin-bottom: 7px !important;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(1turn);
-  }
+#section-log-notes .grid__event .grid__box {
+  left: 0px !important;
+}
+
+#section-log-notes .grid__event .grid__box-header {
+  padding: 5px 0px !important;
+  font-size: 12px !important;
+  margin: -10px 0 0 !important;
+}
+#section-log-notes .customer-note-body {
+  margin-top: 5px !important;
+}
+#section-log-notes .grid__box {
+  padding: 10px !important;
+}
+
+#section-log-notes .grid__box p {
+  margin-bottom: 4px !important;
+  font-size: 14px !important;
 }
 
 .pack-row-moysklad {
@@ -173,14 +157,12 @@ tr.product_out_stock {
   margin-left: 6px;
   position: relative;
 }
+
 .more-info {
   display: flex;
-  /* margin: -6px -2px; */
   margin: 5px 5px 5px 0;
 }
-.more-info > div {
-  /* margin: 2px; */
-}
+
 .more-info > div:not(:last-child):after {
   content: "•";
   font-size: 12px;
@@ -343,9 +325,6 @@ tr.product_out_stock {
   margin-bottom: 8px;
   white-space: nowrap;
   position: relative;
-}
-
-.bl_inp_initial_request {
 }
 
 .main-form .bl_inp_initial_request .input-group {
@@ -533,9 +512,6 @@ tr.product_out_stock {
   width: 90%;
 }
 
-#top_order_ostatki_is_prd .container_list_prd {
-}
-
 #top_order_ostatki_is_prd .container_list_prd.show_list .b_right.dop_style {
   width: 2000px;
   min-height: 30px;
@@ -636,8 +612,7 @@ tr.product_out_stock {
 .item_prd .b_prd_compl.active {
   display: block;
 }
-.item_prd .b_prd_compl .item_compl {
-}
+
 .item_prd .b_prd_compl .item_compl .compl_name {
   font-size: 12px;
 }
