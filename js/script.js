@@ -1,6 +1,6 @@
 document.onreadystatechange = function () {
     if (document.readyState == "complete") {
-        console.log('document.readyState == "complete"');
+        // console.log('document.readyState == "complete"');
         //initScriptInter = setInterval(function () {
         initScript();
        //}, 500);
@@ -33,9 +33,9 @@ var retailCRM = {
 
     init: function (initAction = '') {
 
-        if(initAction == 'telphin'){
-            UsersTelphinAndCRMParams = {'ids': {}};
-            retailCRM.initParserTelphinIsSip();
+        if(initAction == 'callHistory'){
+            // UsersTelphinAndCRMParams = {'ids': {}};
+            // retailCRM.initParserTelphinIsSip();
         }
         else if(initAction == 'OrderOstatki'){                     
             OrderParams = {
@@ -265,6 +265,8 @@ var retailCRM = {
             stockId: store_id
         };
 
+        console.log(paramsOstatki);
+
         let pathServer = 'https://xn--80abwmlfh7b4c.xn--p1ai/integrations/extension_stocks/moysklad_request_new.php'
 
         let msRequest = awFetchRequest(pathServer, paramsOstatki);
@@ -392,25 +394,26 @@ var retailCRM = {
             let dataOffers = data["offers"];                             
             for (let offer of dataOffers) {                
                 let xmlId = offer["xmlId"];                    
-                let stores = offer.stores.filter(e => e.store == 'volga' || e.store == "a1" || e.store == "a1-msk");
+                // let stores = offer.stores.filter(e => e.store == 'volga' || e.store == "a1" || e.store == "a1-msk");
                 // stores = stores.sort().reverse();
-
+                let stores = offer.stores.filter(e => e.store == 'a1' || e.store == "sadovaya");
                 let mapped = stores.map(function(el, i) {
                     // return console.log(el);
                     return { index: i, value: el.store.toLowerCase() };
                 });
 
                 mapped.sort(function(a, b) {
-                if (a.value > b.value) {
-                    return 1; }
-                if (a.value < b.value) {
-                    return -1; }
-                return 0;
+                    if (a.value > b.value) {
+                        return 1; }
+                    if (a.value < b.value) {
+                        return -1; }
+                    return 0;
                 });
 
                 stores = mapped.map(function(el) {
                     return stores[el.index];
-                }).reverse();
+                })
+                // .reverse();
 
                 // console.log(stores);
                 
@@ -433,6 +436,9 @@ var retailCRM = {
                             break;
                         case "a1-msk":
                             legitStockName = "МСК, A1"
+                            break;
+                        case "sadovaya":
+                            legitStockName = "СПБ, ПВЗ"
                             break;
                     }                      
                     retail_stock_html += '<div class="select-stock" data-quantity=' + stockQnt + ' id='+ st["store"] + '>';
@@ -499,9 +505,26 @@ var retailCRM = {
                 // console.log($(field).html().replace(/[^0-9-]/g, ''));
             }      
         });
+    },
+
+    downloadRecords: function() {        
+        $.each($(".call-record"), function (key, val) {
+            // if ($(this).find(".download-link-audio").length === 0) { 
+            //     $(this).css("width", "100px");         
+            //     var dwnldLink = $(this).attr("data-src");            
+            //     $(this).append('<div class="download-link-audio actions"><div class="action start download"><a href=' + dwnldLink + '>DWNLD</a></div></div>');
+            // }
+        });
     }
 }
 
+var moySklad = {
+    init: function(initAction = "") {
+        if (initAction == "moySkladOrder") {
+            console.log("Ms Inited");
+        }
+    }
+}
 
 function initScript() {
     var pathname;
@@ -529,6 +552,18 @@ function initScript() {
             console.log("customers Corporate");      
             retailCRM.moySkladCustomerLink();      
             // btnAddOrder();
+        }
+        
+        else if (document.URL.indexOf('moysklad.ru/app/#customerorder/') != "-1") {
+            // console.log("Moy Sklad Order");     
+            moySklad.init("moySkladOrder");
+            // retailCRM.moySkladCustomerLink();      
+            // btnAddOrder();
+        }
+
+        else if (document.URL.indexOf("#t-log-calls") != "-1") {
+            // console.log("T-log-calls");
+            retailCRM.downloadRecords();
         }
 
     }, 500);

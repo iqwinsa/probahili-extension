@@ -25,6 +25,11 @@
   font-size: 14px !important;
 }
 
+.action.start.download {
+  transform: rotate(90deg);
+  border-left: 10px solid #48b200 !important;
+}
+
 .pack-row-moysklad {
   margin-top: 5px;
   display: inline-block;
