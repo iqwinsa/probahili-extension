@@ -153,21 +153,24 @@ var retailCRM = {
                 shipmentStoreId = $("#order-shipment-store").data("id");
             } else {
                 shipmentStoreVal = $("#intaro_crmbundle_ordertype_shipmentStore option:selected").text();
-                shipmentStoreId = $("#intaro_crmbundle_ordertype_shipmentStore option:selected").val();
+                shipmentStoreId = parseInt($("#intaro_crmbundle_ordertype_shipmentStore option:selected").val());
             }
 
             OrderParams["store"]["id"] = shipmentStoreId;
             OrderParams["store"]["value"] = shipmentStoreVal;
 
             switch (shipmentStoreId) {
-                case "7":
+                case 7:
                     OrderParams["store"]["retailcode"] = "volga";
                     break;
-                case "45":
+                case 45:
                     OrderParams["store"]["retailcode"] = "a1";
                     break;
-                case "78":
+                case 78:
                     OrderParams["store"]["retailcode"] = "a1-msk";
+                    break;
+                case 79:
+                    OrderParams["store"]["retailcode"] = "sadovaya";
                     break;
                 default:
                     OrderParams["store"]["retailcode"] = "volga";
@@ -349,7 +352,7 @@ var retailCRM = {
 
     orderProductLightning: function () {
         let retailStoreCode = OrderParams.store.retailcode;
-       // console.log(retailStoreCode);    
+        console.log(retailStoreCode);    
         $("#order-products-table tbody").each(function (el, th) {   
             // console.log($(th));
             let currentQnt = parseInt($(th).find(".order-product .min-input.quantity.order-value-input").val());
