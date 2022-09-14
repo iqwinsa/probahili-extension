@@ -43,7 +43,7 @@ var retailCRM = {
                     'id' : '',
                     'value' : '',
                     'retailcode': ''
-                }
+                },
             }
 
             OrderItems = {
@@ -52,6 +52,7 @@ var retailCRM = {
                     
             retailCRM.getStoreOrder();
             retailCRM.orderTopFormOstatkiEvent();
+            retailCRM.orderCopyCheckboxEditor();
 
         }
     },
@@ -67,6 +68,18 @@ var retailCRM = {
                 // retailCRM.orderBasketOstatkiPress();
             }, false);
         }
+    },
+
+    orderCopyCheckboxEditor: function() {
+        if ($('input[name^="intaro_crmbundle_ordercopy[operations][]"]').length > 0 && $('#independent-popup-copy-order.is-cleared-checkbox').length == 0) {
+            $('input[name^="intaro_crmbundle_ordercopy[operations][]"]').each(function() {
+                $(this).prop('checked', false);
+            });
+            $('#independent-popup-copy-order').addClass("is-cleared-checkbox");
+        }
+        $('#independent-popup-copy-order .close').click(function() {
+            $('#independent-popup-copy-order').removeClass("is-cleared-checkbox");
+        });
     },
 
     orderTopFormOstatkiEvent: function () {
@@ -352,7 +365,7 @@ var retailCRM = {
 
     orderProductLightning: function () {
         let retailStoreCode = OrderParams.store.retailcode;
-        console.log(retailStoreCode);    
+        // console.log(retailStoreCode);    
         $("#order-products-table tbody").each(function (el, th) {   
             // console.log($(th));
             let currentQnt = parseInt($(th).find(".order-product .min-input.quantity.order-value-input").val());

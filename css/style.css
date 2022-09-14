@@ -642,12 +642,24 @@ tr.product_out_stock {
   bottom: -25px;
 }
 
+@media all and (max-width: 1570px) {
+  .modern-table.order-products tr .status.select.nested-td_hide.bord.align-to-input,
+  .modern-table.order-products tr .nested-th_hide.select.status-th.bord {
+    display: block !important;
+  }
+
+  .modern-table.order-products tr .status.select.nested-td_hide.bord.align-to-input {
+    border-bottom-width: 0px;
+  }
+}
+
 @media all and (max-width: 1024px) {
   .group_list_line_items {
     margin: 10px 0px;
     padding-left: 50px;
   }
 }
+
 
 @media all and (max-width: 768px) {
   .group_list_line_items {
