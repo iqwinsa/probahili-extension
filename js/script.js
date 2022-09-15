@@ -71,9 +71,13 @@ var retailCRM = {
     },
 
     orderCopyCheckboxEditor: function() {
-        if ($('input[name^="intaro_crmbundle_ordercopy[operations][]"]').length > 0 && $('#independent-popup-copy-order.is-cleared-checkbox').length == 0) {
-            $('input[name^="intaro_crmbundle_ordercopy[operations][]"]').each(function() {
-                $(this).prop('checked', false);
+        $copyParams = $('input[name^="intaro_crmbundle_ordercopy[operations][]"]');
+        let ignoreParams = [1, 4, 5];
+        if ($copyParams.length > 0 && $('#independent-popup-copy-order.is-cleared-checkbox').length == 0) {
+            $copyParams.each(function(index) {
+                if ($.inArray(index, ignoreParams) == -1) {
+                     $(this).prop('checked', false);
+                } // возвращаемое значение -1               
             });
             $('#independent-popup-copy-order').addClass("is-cleared-checkbox");
         }
