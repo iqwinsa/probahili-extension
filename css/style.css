@@ -287,6 +287,61 @@ tr.product_out_stock {
   color: #0e0e0e;
 }
 
+.nav-btn_chats .nav-btn__badge {
+  top: 0 !important;
+  right: 0 !important;
+}
+
+.nav-btn_chats .nav-btn__badge .badge {
+  width: 25px;
+  height: 25px;
+  animation: pulse 2s infinite, bgcolor 2s infinite;
+  box-shadow: 0 0 0 rgba(221, 255, 30, 0.986);
+  
+}
+
+@keyframes bgcolor {
+  from {
+    background-color: rgb(255, 28, 28);
+  }
+  to {
+    background-color: rgb(52, 255, 120);
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 200, 0, 0.918);
+    background-color: #dbff10;
+  }
+
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgb(93, 223, 255);
+  }
+
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgb(148, 66, 255);
+    background-color: rgb(250, 92, 255);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgb(204, 169, 44);
+    box-shadow: 0 0 0 0 rgb(204, 169, 44);
+  }
+
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgb(65, 255, 230);
+    box-shadow: 0 0 0 10px rgb(138, 255, 200);
+  }
+
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(126, 28, 255, 0.925);
+    box-shadow: 0 0 0 0 rgba(187, 86, 255, 0.863);
+  }
+}
+
 /* from semicvetik */
 /* from semicvetik */
 /* from semicvetik */
