@@ -305,27 +305,31 @@ var retailCRM = {
                         let purchasePriceDiv = $("#order-products-table tbody .order-product[data-offer-id='" + key + "'] .purchase-price");
                         let salePriceDiv = $("#order-products-table tbody .order-product[data-offer-id='" + key + "'] .price .product-price");
 
-                        stock_html = "<div class='moysklad_stocks'>";
-                        stock_html += "<div class='moysklad_stocks__info'>";
+                        stock_html = "<div class='moysklad_stocks custom__" + retailCRM.makeAnyString(8) + "'>";
+                        stock_html += "<div class='moysklad_stocks__info custom__" + retailCRM.makeAnyString(8) + "'>";
                         if (!isEmpty(moySkladStocks) && typeof moySkladStocks == 'object') {
                             // console.log(moySkladStocks);
-                            stock_html += moySkladStocks["storeName"] + " @ <div class='in-stock'>Доступно: " + moySkladStocks["quantity"] + "</div></div>";
-                            stock_html += "<div class='more-info'><div class='available'>На складе лежит: " + moySkladStocks["stock"] + "</div>";                            
-                            stock_html += "<div class='reserved'>В резерве: " + moySkladStocks["reserve"] + "</div></div>";
-                            if (moySkladStocks["inTransit"] > 0) {
-                                stock_html += "<div class='waiting'>Ожидаем на складе: " + moySkladStocks["inTransit"] + "</div>";
+                            if (!(moySkladStocks["stock"] == undefined || moySkladStocks["stock"] == "undefined")) {
+                                stock_html += moySkladStocks["storeName"] + " @ <div class='in-stock'>Доступно: " + moySkladStocks["quantity"] + "</div></div>";
+                                stock_html += "<div class='more-info custom__" + retailCRM.makeAnyString(8) + "'><div class='available'>На складе лежит: " + moySkladStocks["stock"] + "</div>";                            
+                                stock_html += "<div class='reserved custom__" + retailCRM.makeAnyString(8) + "'>В резерве: " + moySkladStocks["reserve"] + "</div></div>";
+                                if (moySkladStocks["inTransit"] > 0) {
+                                    stock_html += "<div class='waiting custom__" + retailCRM.makeAnyString(8) + "'>Ожидаем на складе: " + moySkladStocks["inTransit"] + "</div>";
+                                } else {
+                                    stock_html += "<div class='not-waiting'>Поступлений не запланировано.</div>";
+                                }
+                                if (moySkladStocks["minPrice"] != null) {
+                                    salePriceDiv.append("<span class='moysklad-additional-info' id='min-price' data-min-price=" + moySkladStocks["minPrice"] + ">Мин.: " + moySkladStocks["minPrice"] + " <span class='currency-symbol rub'>₽</span></span>");
+                                }
+                                if (moySkladStocks["selfPrice"] != null) {
+                                    // stock_html += "<div class='moysklad-additional-info'>Себес.: " + moySkladStocks["selfPrice"] + ", хранятся " + moySkladStocks["stockDays"] + "</div>";
+                                    purchasePriceDiv.append("<span class='moysklad-additional-info' id='self-price' data-self-price=" + moySkladStocks["selfPrice"] + ">Ост.: " + moySkladStocks["selfPrice"] + " <span class='currency-symbol rub'>₽</span></span>");
+                                } 
+                                if (moySkladStocks["cardBuyPrice"] != null) {
+                                    purchasePriceDiv.append("<span class='moysklad-additional-info' id='ms-card-price' data-card-price=" + moySkladStocks["cardBuyPrice"] + ">МС: " + moySkladStocks["cardBuyPrice"] + " <span class='currency-symbol rub'>₽</span></span>");
+                                }
                             } else {
-                                stock_html += "<div class='not-waiting'>Поступлений не запланировано.</div>";
-                            }
-                            if (moySkladStocks["minPrice"] != null) {
-                                salePriceDiv.append("<span class='moysklad-additional-info' id='min-price' data-min-price=" + moySkladStocks["minPrice"] + ">Мин.: " + moySkladStocks["minPrice"] + " <span class='currency-symbol rub'>₽</span></span>");
-                            }
-                            if (moySkladStocks["selfPrice"] != null) {
-                                // stock_html += "<div class='moysklad-additional-info'>Себес.: " + moySkladStocks["selfPrice"] + ", хранятся " + moySkladStocks["stockDays"] + "</div>";
-                                purchasePriceDiv.append("<span class='moysklad-additional-info' id='self-price' data-self-price=" + moySkladStocks["selfPrice"] + ">Ост.: " + moySkladStocks["selfPrice"] + " <span class='currency-symbol rub'>₽</span></span>");
-                            } 
-                            if (moySkladStocks["cardBuyPrice"] != null) {
-                                purchasePriceDiv.append("<span class='moysklad-additional-info' id='ms-card-price' data-card-price=" + moySkladStocks["cardBuyPrice"] + ">МС: " + moySkladStocks["cardBuyPrice"] + " <span class='currency-symbol rub'>₽</span></span>");
+                                stock_html += "<div class='retailcrm-hotprice_text'>Товар в архиве!!! <br/>Его надо удалять из заказа.</div>"
                             }
                             // if (moySkladStocks["uihref"] != "") stock_html += "<div class='moysklad_link'><button target='_blank' href=" + moySkladStocks["uihref"] + ">Карточка в МС</button></div>";
                         } else {
@@ -481,6 +485,16 @@ var retailCRM = {
         // ajax_response.fail(function (jqXHR, textStatus, errorThrown) {
         //     console.log(textStatus + ': ' + errorThrown);
         // })
+    },
+
+    makeAnyString: function (length) {
+        let result           = '';
+        let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let charactersLength = characters.length;
+        for ( let i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
     },
 
 	showTopFormOstatkiHTML: function () {
