@@ -64,6 +64,8 @@ var retailCRM = {
             btn_close_popup.addEventListener('click', function () {
                 console.log("******");
                 retailCRM.retailNewInventories();
+                retailCRM.enumerationOfGoods();
+                retailCRM.orderProductLightning();
                 // инициализация кнопки клика на получение запроса информации
                 // retailCRM.orderBasketOstatkiPress();
             }, false);
@@ -103,6 +105,8 @@ var retailCRM = {
 
             // инициализация кнопки закрытия окна попап на добавление товаров
             retailCRM.orderPopupFormClose();        
+
+            retailCRM.enumerationOfGoods();
 
             var h_hght = 30; // высота шапки
             var h_hght_ = $("#top_order_ostatki_is_prd").outerHeight(true); // высота шапки
@@ -156,6 +160,7 @@ var retailCRM = {
             $("#top_order_ostatki_is_prd .b_item_order_params[data-type='sklad'] .b_params_val").text(OrderParams.store.value);
             $("#top_order_ostatki_is_prd .b_item_order_params[data-type='date-tame'] .b_params_val").text(deliveryInfo_text);
             // console.log(retailCRM.getStoreOrder()["id"]);
+
         }
 
     },
@@ -194,7 +199,8 @@ var retailCRM = {
                     break;
             }   
 
-        retailCRM.orderProductLightning();
+        retailCRM.orderProductLightning(); 
+        retailCRM.enumerationOfGoods();       
 
             // console.log(OrderParams);
     },
@@ -220,17 +226,18 @@ var retailCRM = {
                 let moySkladStocksYet = $(th).find(".moysklad_stocks").length > 0 ? true : false;
 
                 let isArchivePosition = $(th).find(".order-product .title span.tr-link").length > 0 ? true : false;
+                
                 // console.log(archiveProduct);
                 let isArchiveHtml = "";
 
                 if (xmlId == undefined && !isArchivePosition) {   
                     // console.log("pusto - ok ");                    
-                    OrderItems["items"][$(th).find('.order-product').attr("data-offer-id")] = {
-                        offer_id: $(th).find('.order-product').attr("data-offer-id"),
+                    OrderItems["items"][offer_id] = {
+                        offer_id: offer_id,
                         // xmlId: xmlId
                     };
                 } else if (requestType == "moysklad" && !moySkladStocksYet && xmlId != undefined) {
-                    OrderItems["items"][$(th).find('.order-product').attr("data-offer-id")] = {                        
+                    OrderItems["items"][offer_id] = {                        
                         xmlId: xmlId
                     };
                 } else if (isArchivePosition) {
@@ -371,6 +378,26 @@ var retailCRM = {
         }       
     },
 
+    enumerationOfGoods: function () {
+        $("#order-products-table tbody").each(function (el, th) {   
+            retailCRM.orderSuperProduct($(this));                  
+        })
+    },
+
+    orderSuperProduct: function (self) {               
+        $(self).find(".additional.elipsis").each(function() {
+            // if (this.innerText.indexOf("супер-товар") == 0) $(this).hide();
+            if ($(this).attr("title").indexOf("супер-товар") == 0) $(this).hide();
+            if ($(this).attr("title") == "супер-товар: Да") { 
+                // console.log(this);                      
+                if ($(this).parent().find(".super-product").length == 0) {        
+                    $(this).parent().append(`<div class="additional superproduct">Супер-товар</div>`);  
+                    $(this).addClass("super-product");             
+                }                   
+            }
+        })                            
+    },
+
     orderProductLightning: function () {
         let retailStoreCode = OrderParams.store.retailcode;
         // console.log(retailStoreCode);    
@@ -475,6 +502,7 @@ var retailCRM = {
                 }
                 // pos.append(retail_stock_html);
                 retailCRM.orderProductLightning();
+                retailCRM.enumerationOfGoods();
             }
             $("#ms-query").removeAttr('disabled');
         })
@@ -538,16 +566,6 @@ var retailCRM = {
                 // console.log($(field).text().replace(/[^0-9-]/g, ''));
                 // console.log($(field).html().replace(/[^0-9-]/g, ''));
             }      
-        });
-    },
-
-    downloadRecords: function() {        
-        $.each($(".call-record"), function (key, val) {
-            // if ($(this).find(".download-link-audio").length === 0) { 
-            //     $(this).css("width", "100px");         
-            //     var dwnldLink = $(this).attr("data-src");            
-            //     $(this).append('<div class="download-link-audio actions"><div class="action start download"><a href=' + dwnldLink + '>DWNLD</a></div></div>');
-            // }
         });
     }
 }
