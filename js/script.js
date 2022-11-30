@@ -387,14 +387,16 @@ var retailCRM = {
     orderSuperProduct: function (self) {               
         $(self).find(".additional.elipsis").each(function() {
             // if (this.innerText.indexOf("супер-товар") == 0) $(this).hide();
-            if ($(this).attr("title").indexOf("супер-товар") == 0) $(this).hide();
-            if ($(this).attr("title") == "супер-товар: Да") { 
-                // console.log(this);                      
-                if ($(this).parent().find(".super-product").length == 0) {        
-                    $(this).parent().append(`<div class="additional superproduct">Супер-товар</div>`);  
-                    $(this).addClass("super-product");             
-                }                   
-            }
+            if ($(this).attr("title") !== undefined) {
+                if ($(this).attr("title").indexOf("супер-товар") == 0) $(this).hide();
+                if ($(this).attr("title") == "супер-товар: Да") { 
+                    // console.log(this);                      
+                    if ($(this).parent().find(".super-product").length == 0) {        
+                        $(this).parent().append(`<div class="additional superproduct">Супер-товар</div>`);  
+                        $(this).addClass("super-product");             
+                    }                   
+                }
+        }
         })                            
     },
 
