@@ -449,7 +449,7 @@ var retailCRM = {
                 let xmlId = offer["xmlId"];                    
                 // let stores = offer.stores.filter(e => e.store == 'volga' || e.store == "a1" || e.store == "a1-msk");
                 // stores = stores.sort().reverse();
-                let stores = offer.stores.filter(e => e.store == 'a1' || e.store == "sadovaya");
+                let stores = offer.stores.filter(e => e.store == "spb-new" | e.store == "a1" || e.store == "sadovaya");
                 let mapped = stores.map(function(el, i) {
                     // return console.log(el);
                     return { index: i, value: el.store.toLowerCase() };
@@ -492,6 +492,9 @@ var retailCRM = {
                             break;
                         case "sadovaya":
                             legitStockName = "СПБ, ПВЗ"
+                            break;
+                        case "spb-new":
+                            legitStockName = "СПБ, Новый"
                             break;
                     }                      
                     retail_stock_html += '<div class="select-stock" data-quantity=' + stockQnt + ' id='+ st["store"] + '>';
@@ -575,7 +578,7 @@ var retailCRM = {
 var moySklad = {
     init: function(initAction = "") {
         if (initAction == "moySkladOrder") {
-            console.log("Ms Inited");
+            // console.log("Ms Inited");
         }
     }
 }
